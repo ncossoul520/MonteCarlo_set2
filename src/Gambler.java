@@ -1,8 +1,8 @@
 public class Gambler {
     private static int num_runs;
-    private static double ODDS_LOSE   = 0.5;
-    private static int    DOLLAR_WIN  = 250;
-    private static int    DOLLAR_LOSE = 0;
+    private static double ODDS_LOSE = 0.5;
+    private static int DOLLAR_WIN = 250;
+    private static int DOLLAR_LOSE = 0;
 
 
     static void Run(int runs) {
@@ -12,8 +12,8 @@ public class Gambler {
         int num_rounds_lose = 0;
 
         for (int game = 1; game < num_runs; game++) {
-            GamblerResult res = playOneGame();
-            if ( res.getIs_win() ) {
+            Result res = playOneGame();
+            if (res.getIs_win()) {
                 num_wins++;
                 num_rounds_win += res.getNum_turns();
             } else {
@@ -21,23 +21,23 @@ public class Gambler {
             }
         }
 
-        double prob_win  = (double)num_wins/num_runs;
-        double prob_lose = (double)(num_runs-num_wins)/num_runs;
-        int avg_round_win  = (int) Math.round( (double)num_rounds_win/num_runs );
-        int avg_round_lose = (int) Math.round( (double)num_rounds_lose/num_runs );
+        double prob_win = (double) num_wins / num_runs;
+        double prob_lose = (double) (num_runs - num_wins) / num_runs;
+        int avg_round_win = (int) Math.round((double) num_rounds_win / num_runs);
+        int avg_round_lose = (int) Math.round((double) num_rounds_lose / num_runs);
 
-        System.out.println( "Probability of winning $" + DOLLAR_WIN  + ": " + prob_win  + " in " + avg_round_win  + " rounds on average"  );
-        System.out.println( "Probability of losing  $" + DOLLAR_LOSE + ": " + prob_lose + " in " + avg_round_lose + " rounds on average"  );
+        System.out.println("Probability of winning $" + DOLLAR_WIN + ": " + prob_win + " in " + avg_round_win + " rounds on average");
+        System.out.println("Probability of losing  $" + DOLLAR_LOSE + ": " + prob_lose + " in " + avg_round_lose + " rounds on average");
     }
 
-    private static GamblerResult playOneGame() {
+    private static Result playOneGame() {
         boolean is_win;
         int money = 50;
         int num_turns = 0;
 
         do {
             num_turns++;
-            if ( Math.random() > ODDS_LOSE ) { // win
+            if (Math.random() > ODDS_LOSE) { // win
                 money++;
             } else {
                 money--;
@@ -47,7 +47,27 @@ public class Gambler {
 
         is_win = (money == DOLLAR_WIN);
 
-        GamblerResult res = new GamblerResult(is_win, num_turns);
+        Result res = new Result(is_win, num_turns);
         return res;
     }
+
+    private static class Result {
+        private boolean is_win;
+        private int num_turns;
+
+        public Result(boolean is_win, int num_turns) {
+            this.is_win = is_win;
+            this.num_turns = num_turns;
+        }
+
+        public boolean getIs_win() {
+            return is_win;
+        }
+
+        public int getNum_turns() {
+            return num_turns;
+        }
+    }
 }
+
+
